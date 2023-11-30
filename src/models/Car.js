@@ -2,7 +2,9 @@ import { Random } from '@woowacourse/mission-utils';
 
 class Car {
   #name;
+
   #position;
+
   #MINIMUM_MOVE_VALUE = 4;
 
   constructor(name) {
@@ -16,8 +18,17 @@ class Car {
       this.#setPosition();
     }
   }
+
   #setPosition() {
     this.#position += 1;
+  }
+
+  getPosition() {
+    return this.#position;
+  }
+
+  getName() {
+    return this.#name;
   }
 }
 export default Car;
