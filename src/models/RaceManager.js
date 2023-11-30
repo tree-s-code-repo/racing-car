@@ -26,7 +26,7 @@ class RaceManager {
     return Math.max(...positions, 0);
   }
 
-  calculateResult() {
+  calculateWinner() {
     const winner = [];
     const longestPosition = this.findLongestPosition();
 
