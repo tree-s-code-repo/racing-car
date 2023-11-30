@@ -3,6 +3,7 @@ import OutputView from '../views/OutputView.js';
 import CarNameValidator from '../validator/CarNameValidator.js';
 import Car from '../models/Car.js';
 import RaceManager from '../models/RaceManager.js';
+import RoundValidator from '../validator/RoundValidator.js';
 
 class RaceController {
   async start() {
@@ -29,14 +30,17 @@ class RaceController {
   }
 
   async #propmtPlayRound() {
-    const playRound = await InputView.readPlayRound();
-    return playRound;
+    const value = await InputView.readPlayRound();
+    const palyRound = Number(value);
+    new RoundValidator(palyRound);
+
+    return palyRound;
   }
 
   #printRaceResult(raceManager, playRound) {
     OutputView.printMessage('실행결과 : ');
 
-    for (let index = 0; index < Number(playRound); index++) {
+    for (let index = 0; index < playRound; index++) {
       this.startRace(raceManager);
     }
   }
