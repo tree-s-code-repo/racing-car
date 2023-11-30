@@ -21,13 +21,13 @@ class RaceManager {
     return status;
   }
 
-  findLongestPosition() {
+  #findLongestPosition() {
     const positions = this.#cars.map(car => car.getPosition());
     return Math.max(...positions, 0);
   }
 
   calculateWinner() {
-    const longestPosition = this.findLongestPosition();
+    const longestPosition = this.#findLongestPosition();
 
     const winners = this.#cars
       .filter(car => car.getPosition() === longestPosition)
