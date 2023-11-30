@@ -8,30 +8,24 @@ class RaceController {
   constructor() {}
 
   async start() {
-    const cars = await this.promptCarNames();
+    const carNames = await this.promptCarNames();
+    const carModels = this.createCarModels(carNames);
     const playRound = await this.propmtPlayRound();
-    const raceManager = new RaceManager(cars);
+    const raceManager = new RaceManager(carModels);
 
     this.printRaceResult(raceManager, playRound);
-    const winner = raceManager.calculateResult();
-    this.printWinnerResult(winner);
+    this.printWinnerResult(raceManager.calculateWinner());
   }
 
   async promptCarNames() {
     const PropmtedcarNames = await InputView.readCars();
     const carNames = PropmtedcarNames.split(',').map(carName => carName.trim());
     new CarNameValidator(carNames);
-
-    return this.setRaceCar(carNames);
+    return carNames;
   }
 
-  setRaceCar(carNames) {
-    const cars = [];
-
-    carNames.forEach(carName => {
-      cars.push(new Car(carName));
-    });
-
+  createCarModels(carNames) {
+    const cars = carNames.map(carName => new Car(carName));
     return cars;
   }
 
@@ -46,8 +40,7 @@ class RaceController {
     for (let index = 0; index < Number(playRound); index++) {
       raceManager.race();
       const raceStatus = raceManager.status();
-
-      this.printStatus(raceStatus);
+      this.printGameStatus(raceStatus);
       OutputView.printMessage('\n');
     }
   }
@@ -56,7 +49,7 @@ class RaceController {
     OutputView.printMessage(`최종 우승자 : ${winner.join()}`);
   }
 
-  printStatus(raceStatus) {
+  printGameStatus(raceStatus) {
     raceStatus.forEach(({ name, position }) => {
       const distance = this.createHyphenString(position);
       OutputView.printMessage(`${name} : ${distance}`);
