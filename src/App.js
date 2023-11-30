@@ -1,6 +1,12 @@
+import RaceController from './controllers/RaceController.js';
+
 class App {
+  constructor() {
+    this.raceController = new RaceController();
+  }
+
   async play() {
-    console.log("dtd");
+    await this.raceController.start();
   }
 }
 
