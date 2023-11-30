@@ -5,47 +5,51 @@ import Car from '../models/Car.js';
 import RaceManager from '../models/RaceManager.js';
 
 class RaceController {
-  constructor() {}
-
   async start() {
-    const carNames = await this.promptCarNames();
-    const carModels = this.createCarModels(carNames);
-    const playRound = await this.propmtPlayRound();
+    const carNames = await this.#promptCarNames();
+    const carModels = this.#createCarModels(carNames);
+    const playRound = await this.#propmtPlayRound();
     const raceManager = new RaceManager(carModels);
 
-    this.printRaceResult(raceManager, playRound);
-    this.printWinnerResult(raceManager.calculateWinner());
+    this.#printRaceResult(raceManager, playRound);
+    this.#printWinnerResult(raceManager.calculateWinner());
   }
 
-  async promptCarNames() {
+  async #promptCarNames() {
     const PropmtedcarNames = await InputView.readCars();
     const carNames = PropmtedcarNames.split(',').map(carName => carName.trim());
     new CarNameValidator(carNames);
+
     return carNames;
   }
 
-  createCarModels(carNames) {
+  #createCarModels(carNames) {
     const cars = carNames.map(carName => new Car(carName));
     return cars;
   }
 
-  async propmtPlayRound() {
+  async #propmtPlayRound() {
     const playRound = await InputView.readPlayRound();
     return playRound;
   }
 
-  printRaceResult(raceManager, playRound) {
+  #printRaceResult(raceManager, playRound) {
     OutputView.printMessage('실행결과 : ');
 
     for (let index = 0; index < Number(playRound); index++) {
-      raceManager.race();
-      const raceStatus = raceManager.status();
-      this.printGameStatus(raceStatus);
-      OutputView.printMessage('\n');
+      this.startRace(raceManager);
     }
   }
 
-  printWinnerResult(winner) {
+  startRace(raceManager) {
+    raceManager.race();
+    const raceStatus = raceManager.status();
+    this.printGameStatus(raceStatus);
+
+    OutputView.printMessage('\n');
+  }
+
+  #printWinnerResult(winner) {
     OutputView.printMessage(`최종 우승자 : ${winner.join()}`);
   }
 
