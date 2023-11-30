@@ -27,16 +27,13 @@ class RaceManager {
   }
 
   calculateWinner() {
-    const winner = [];
     const longestPosition = this.findLongestPosition();
 
-    this.#cars.forEach(car => {
-      if (car.getPosition() === longestPosition) {
-        winner.push(car.getName());
-      }
-    });
+    const winners = this.#cars
+      .filter(car => car.getPosition() === longestPosition)
+      .map(car => car.getName());
 
-    return winner;
+    return winners;
   }
 }
 
